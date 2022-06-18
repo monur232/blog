@@ -65,11 +65,11 @@ public class GameController {
     }
 
     @GetMapping(value = "admin/gameUpdate/{id}")
-    public ModelAndView updateGameView(@PathVariable("id") int id ) {
+    public ModelAndView updateGameView(@PathVariable("id") int id) {
         ModelAndView modelAndView = new ModelAndView();
         Optional<Game> gameOptional = gameRepository.findById(id);
-        if(!gameOptional.isPresent()){
-            new Exception("No Game found using this id "+id);
+        if (!gameOptional.isPresent()) {
+            new Exception("No Game found using this id " + id);
         }
 
 
@@ -78,13 +78,14 @@ public class GameController {
         modelAndView.setViewName("admin/game_update");
         return modelAndView;
     }
+
     @PostMapping(value = "admin/gameUpdate")
-    public ModelAndView updateGame(@Validated GameDTO gameDTO) throws IOException {
+    public String updateGame(@Validated GameDTO gameDTO) throws IOException {
         ModelAndView modelAndView = new ModelAndView();
 
         Optional<Game> gameOptional = gameRepository.findById(gameDTO.getId());
-        if(!gameOptional.isPresent()){
-            new Exception("No Game found using this id "+gameDTO.getId());
+        if (!gameOptional.isPresent()) {
+            new Exception("No Game found using this id " + gameDTO.getId());
         }
         Game game = gameOptional.get();
         game.setTeamA(gameDTO.getTeamA());
@@ -104,21 +105,32 @@ public class GameController {
 
         gameRepository.save(game);
 
-        modelAndView.addObject("successMessage", "There is already registered user...!");
-        modelAndView.setViewName("admin/gameViews");
-
-        return modelAndView;
+        return "redirect:/";
     }
 
 
+    @GetMapping(value = "admin/gameDelete/{id}")
+    public String deleteGame(@PathVariable("id") int id) throws IOException {
+        ModelAndView modelAndView = new ModelAndView();
+
+        Optional<Game> gameOptional = gameRepository.findById(id);
+        if (!gameOptional.isPresent()) {
+            new Exception("No Game found using this id " + id);
+        }
+        Game game = gameOptional.get();
 
 
-    @GetMapping(value = { "/", "admin/gameViews"})
+        gameRepository.delete(game);
+        return "redirect:/";
+    }
+
+
+    @GetMapping(value = {"/", "admin/gameViews"})
     public ModelAndView gameViews() {
 
         List<Game> games = gameRepository.findAllGames();
-        Set<GameDTO> gameDTOS=new HashSet<>();
-        for (Game game:games){
+        Set<GameDTO> gameDTOS = new HashSet<>();
+        for (Game game : games) {
             gameDTOS.add(new GameDTO(game));
         }
 
