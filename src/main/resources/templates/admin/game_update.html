@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Game Update Form</title>
+    <th:block th:include="layout/header"></th:block>
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/css/registration.css}"/>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script
+            src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script
+            src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        body, html {
+            height: 100%;
+        }
+
+        .bg {
+            /* The image used */
+            /* Full height */
+            height: 100%;
+            /* Center and scale the image nicely */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
+</head>
+
+
+<body style="background-color: teal;">
+<div class="container">
+    <div>
+
+
+        <form th:action="@{/admin/gameUpdate}" th:object="${gameDTO}"
+              method="post" class="form-horizontal" enctype="multipart/form-data">
+            <br/> <br/>
+            <div class="col-md-4 col-md-offset-4 "
+                 style="background-color: silver; border-radius: 15px">
+                <div class="col-md-12 ">
+                    <input type="number" style="display: none" th:field="*{id}">
+                    <h2>Game Creation Form</h2>
+                    <br/>
+                    <div class="form-group">
+
+                        <div class="col-sm-6">
+
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <input type="text" th:field="*{teamA}"
+                                           placeholder="team_a name" required="required"
+                                           class="form-control"/>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <input type="text" th:field="*{teamAResult}"
+                                           placeholder="team A Result" required="required"
+                                           class="form-control"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <input type="file" th:field="*{teamAPhoto}"
+                                           placeholder="image"
+                                           class="form-control"/>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <span class="text-center col-sm-6">Team A Game Status </span>
+                                <div class="col-sm-6">
+                                    <select th:field="*{teamAStatus}">
+                                        <option th:each="state : ${T(com.monur.blog.common.GameStatus).values()}"
+                                                th:value="${state}"
+                                                th:text="${state}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-sm-6">
+
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <input type="text" th:field="*{teamB}"
+                                           placeholder="team_b name" required="required"
+                                           class="form-control"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <input type="text" th:field="*{teamBResult}"
+                                           placeholder="team B Result" required="required"
+                                           class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <input type="file" th:field="*{teamBPhoto}"
+                                           placeholder="image"
+                                           class="form-control"/>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <input type="text" th:field="*{details}"
+                                       placeholder="Details" required="required"
+                                       class="form-control"/>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <button type="submit" class="btn btn-primary btn-block">Upadte
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
+    </div>
+</div>
+
+
+</body>
+</html>

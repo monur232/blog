@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org"
+>
+<head>
+    <title>Game Score</title>
+    <th:block th:include="layout/header"></th:block>
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/css/game_views.css}"/>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script
+            src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script
+            src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        body, html {
+            height: 100%;
+        }
+
+        .bg {
+            /* The image used */
+            /* Full height */
+            height: 100%;
+            /* Center and scale the image nicely */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
+</head>
+
+
+<body style="background-color: teal;">
+<div class="container">
+    <div>
+
+
+        <div th:each="game : ${gameDTOS}">
+            </br>
+
+            <div class="form-group" >
+                <div class="col-sm-12 full-result-box">
+
+
+                        <div class="col-sm-3 text-center">
+                            <div class="col-sm-12">
+                                <img th:src="*{'data:image/png;base64,'+game.teamAPhotoBytes}"  alt="John" class="center-block team-image" width="58" height="58">
+                            </div>
+                            <div class="col-sm-12">
+                                <span class="text-center team-name" th:text="${game.teamA}">[[${game.teamA}]]</span>
+                            </div>
+                        </div>
+
+
+
+
+
+                        <div class="col-sm-3 text-center">
+                            <div class="col-sm-12">
+                                <span class="text-center result-score" th:text="${game.teamAResult}">[[${game.teamB}]]</span>
+                                <span class="text-center result-score"  >-</span>
+                                <span class="text-center result-score" th:text="${game.teamBResult}">[[${game.teamB}]]</span>
+                            </div>
+                            <div class="col-sm-12">
+                                <span class="text-center"  >[[${game.teamA}]] [[${game.teamAStatus}]] </span>
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="col-sm-3 text-center">
+                            <div class="col-sm-12">
+                                <img th:src="*{'data:image/png;base64,'+game.teamBPhotoBytes}"  alt="John" class="center-block team-image" width="58" height="58">
+                            </div>
+                            <div class="col-sm-12">
+                                <span class="text-center team-name" th:text="${game.teamB}">[[${game.teamB}]]</span>
+                            </div>
+                        </div>
+
+                    <div class="col-sm-12  team-details">
+                        <p class="col-sm-12  text-center " th:text="${game.details}">[[${game.details}]]</p>
+
+
+
+                        <a sec:authorize="hasAuthority('ADMIN')"  class="col-sm-6 btn btn-primary" th:href="@{/admin/gameUpdate/{id}(id=${game.id})}">Update</a>
+                        <a sec:authorize="hasAuthority('ADMIN')"  class="col-sm-6 btn btn-danger" th:href="@{/admin/gameDelete/{id}(id=${game.id})}">Delete</a>
+                    </div>
+
+
+
+                </div>
+            </div>
+
+
+
+        </div>
+
+
+    </div>
+</div>
+
+
+</body>
+</html>
