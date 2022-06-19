@@ -20,7 +20,6 @@
             src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 
-
 </head>
 
 <body style="background-color: teal;">
@@ -50,6 +49,12 @@
                                                                id="password"
                                                                name="password" class="form-control"/> <br/>
                         </div>
+                        <div class="form-label-group">
+
+                            <input type="checkbox" name="remember-me"/>
+                            <span> Remember Me</span>
+                        </div>
+
 
                         <div align="center" th:if="${param.error}">
                             <p style="font-size: 20; color: #FF1C19;">Email or Password

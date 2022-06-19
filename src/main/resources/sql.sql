@@ -1,0 +1,1 @@
+CREATE TABLE  persistent_logins (`username` VARCHAR(255) NOT NULL , `series` VARCHAR(255) NOT NULL , `token` VARCHAR(255) NOT NULL , `last_used` DATE NOT NULL ) ;
