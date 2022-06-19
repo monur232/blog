@@ -1,7 +1,11 @@
 package com.monur.blog.model.dto;
 
-import java.util.Set;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
+import java.util.Set;
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDTO {
 
 	private int id;
