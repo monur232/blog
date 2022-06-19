@@ -23,73 +23,72 @@ import java.util.Collection;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-	@Autowired
-	private DataSource dataSource;
+    @Autowired
+    private DataSource dataSource;
 
-	@Value("${spring.queries.users-query}")
-	private String usersQuery;
+    @Value("${spring.queries.users-query}")
+    private String usersQuery;
 
-	@Value("${spring.queries.roles-query}")
-	private String rolesQuery;
+    @Value("${spring.queries.roles-query}")
+    private String rolesQuery;
 
-	public Collection<SimpleGrantedAuthority> authorities;
+    public Collection<SimpleGrantedAuthority> authorities;
 
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.jdbcAuthentication()
-				.usersByUsernameQuery(usersQuery)
-				.authoritiesByUsernameQuery(rolesQuery)
-				.dataSource(dataSource)
-				.passwordEncoder(bCryptPasswordEncoder);
-	}
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.jdbcAuthentication()
+                .usersByUsernameQuery(usersQuery)
+                .authoritiesByUsernameQuery(rolesQuery)
+                .dataSource(dataSource)
+                .passwordEncoder(bCryptPasswordEncoder);
+    }
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
 
-		http
-				.sessionManagement(session -> session
-						.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-						.maximumSessions(1)
-						.expiredUrl("/sessionExpired.html")
+        http
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                        .maximumSessions(1)
+                        .expiredUrl("/sessionExpired.html")
 
-				)
+                )
 
 
+                .authorizeRequests()
+                .antMatchers("/").permitAll()
+                .antMatchers("/login").permitAll()
+                .antMatchers("/registration").permitAll()
+                .antMatchers("/aboutUs").permitAll()
+                .antMatchers("/admin/**")
+                .hasAnyAuthority("ADMIN", "USER").anyRequest().authenticated()
 
-				.authorizeRequests()
-				.antMatchers("/").permitAll()
-				.antMatchers("/login").permitAll()
-				.antMatchers("/registration").permitAll()
-				.antMatchers("/aboutUs").permitAll()
-				.antMatchers("/admin/**").permitAll()
-//				.hasAnyAuthority("ADMIN","USER").anyRequest().authenticated()
-	
-				.and().csrf().disable()
-				.formLogin().loginPage("/login").failureUrl("/login?error=true")
-				.defaultSuccessUrl("/").usernameParameter("email").passwordParameter("password").and()
+                .and().csrf().disable()
+                .formLogin().loginPage("/login").failureUrl("/login?error=true")
+                .defaultSuccessUrl("/").usernameParameter("email").passwordParameter("password").and()
 
-				.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).deleteCookies("SESSION")
-				.logoutSuccessUrl("/login").and().exceptionHandling().accessDeniedPage("/access-denied")
+                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).deleteCookies("SESSION")
+                .logoutSuccessUrl("/login").and().exceptionHandling().accessDeniedPage("/access-denied")
 
-				.and().rememberMe().tokenRepository(persistentTokenRepository())
+                .and().rememberMe().tokenRepository(persistentTokenRepository())
 //				.tokenValiditySeconds(7 * 24 * 60 * 60) // expiration time: 7 days
 
-		;
-	}
+        ;
+    }
 
-	@Override
-	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
-	}
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
+    }
 
-	@Bean
-	public PersistentTokenRepository persistentTokenRepository() {
-		JdbcTokenRepositoryImpl tokenRepo = new JdbcTokenRepositoryImpl();
-		tokenRepo.setDataSource(dataSource);
-		return tokenRepo;
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository() {
+        JdbcTokenRepositoryImpl tokenRepo = new JdbcTokenRepositoryImpl();
+        tokenRepo.setDataSource(dataSource);
+        return tokenRepo;
 
-	}
+    }
 }

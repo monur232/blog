@@ -20,6 +20,6 @@ public class HttpRequestTest {
     public void greetingShouldReturnDefaultMessage() throws Exception {
         Assertions.assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/",
                 String.class))
-                .contains("Hello, World");
+                .contains("Home");
     }
 }
