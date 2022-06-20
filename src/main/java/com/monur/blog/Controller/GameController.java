@@ -8,6 +8,7 @@ import com.monur.blog.repo.GameRepository;
 import com.monur.blog.repo.PhotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.*;
 
@@ -38,8 +40,13 @@ public class GameController {
     }
 
     @PostMapping(value = "admin/gameCreate")
-    public ModelAndView createNewGame(@Validated GameDTO gameDTO) throws IOException {
+    public ModelAndView createNewGame(@Valid GameDTO gameDTO, Errors errors) throws IOException {
         ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("admin/game_create");
+
+        if (null != errors && errors.getErrorCount() > 0) {
+            return modelAndView;
+        }
         Game game = new Game();
         game.setTeamA(gameDTO.getTeamA());
         game.setTeamAResult(gameDTO.getTeamAResult());
@@ -59,7 +66,6 @@ public class GameController {
         gameRepository.save(game);
 
         modelAndView.addObject("successMessage", "There is already registered user...!");
-        modelAndView.setViewName("admin/game_create");
 
         return modelAndView;
     }
