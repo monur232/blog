@@ -68,7 +68,7 @@
 
                             <div class="form-group">
                                 <div class="col-sm-12">
-                                    <input type="file" th:field="*{teamAPhoto}"
+                                    <input type="file" th:field="*{teamAPhoto}"  required="required"
                                            placeholder="image"
                                            class="form-control"/>
                                     <p class="alert alert-danger" th:if="${#fields.hasErrors('teamAPhoto')}"
@@ -118,7 +118,7 @@
                             <div class="form-group">
                                 <div class="col-sm-12">
                                     <input type="file" th:field="*{teamBPhoto}"
-                                           placeholder="image"
+                                           placeholder="image"  required="required"
                                            class="form-control"/>
                                     <p class="alert alert-danger" th:if="${#fields.hasErrors('teamBPhoto')}" th:errors="*{teamBPhoto}">
 
