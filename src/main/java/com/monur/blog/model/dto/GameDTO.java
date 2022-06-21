@@ -8,6 +8,8 @@ import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Base64;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -16,10 +18,23 @@ import java.util.Base64;
 public class GameDTO {
 
     private int id;
+    @NotNull(message = "team A Name can not be null!!")
+    @NotEmpty(message = "team A Name can not be empty!!")
     private String teamA;
+
+    @NotNull(message = "team B Name can not be null!!")
+    @NotEmpty(message = "team B Name can not be empty!!")
     private String teamB;
+
+    @NotNull(message = "team A Result can not be null!!")
+    @NotEmpty(message = "team A Result can not be empty!!")
     private String teamAResult;
+
+    @NotNull(message = "team B Result can not be null!!")
+    @NotEmpty(message = "team B Result can not be empty!!")
     private String teamBResult;
+
+
     private GameStatus teamAStatus;
     private String details;
     private MultipartFile teamAPhoto;
