@@ -12,7 +12,12 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 
+import java.io.File;
+import java.nio.file.Files;
 import java.util.List;
 
 
@@ -69,12 +74,6 @@ public class RepositoryTests {
     }
 
 
-
-
-
-
-
-
     @Test
     public void GameRepositoryNullTest() throws Exception {
         Assertions.assertThat(gameRepository).isNotNull();
@@ -83,12 +82,13 @@ public class RepositoryTests {
 
     @Test
     public void GameRepositoryCustomQueryTest() throws Exception {
-
-
-        Photo teamAPhoto = new Photo(null, new byte[1000]);
-        Photo teamBPhoto = new Photo(null, new byte[1000]);
-        teamAPhoto = photoRepository.save(teamAPhoto);
-        teamBPhoto = photoRepository.save(teamAPhoto);
+        ResourceLoader resourceLoader = new DefaultResourceLoader();
+        Resource resource = resourceLoader.getResource("classpath:p1.jpg");
+        byte[] p1 = Files.readAllBytes(resource.getFile().toPath());
+        Photo teamAPhoto = new Photo(null, p1);
+        Photo teamBPhoto = new Photo(null, p1);
+//        teamAPhoto = photoRepository.save(teamAPhoto);
+//        teamBPhoto = photoRepository.save(teamAPhoto);
 
         Game game = new Game(
                 null,
